@@ -1,0 +1,12 @@
+apiVersion: "kcli.karmalabs.local/v1"
+kind: Machine
+metadata:
+  name: vm2
+spec:
+  providerConfig:
+    value:
+      kind: "KcliMachineProviderConfig"
+      profile: CentOS-7-x86_64-GenericCloud.qcow2
+      parameters:
+        memory: 2048
+        numcpus: 2
