@@ -69,6 +69,7 @@ if __name__ == "__main__":
         definition = 'machine.yml'
     configuration = client.Configuration()
     configuration.assert_hostname = False
+    client.Configuration.set_default(client)
     api_client = client.api_client.ApiClient(configuration=configuration)
     v1 = client.ApiextensionsV1beta1Api(api_client)
     current_crds = [x['spec']['names']['kind'].lower() for x in v1.list_custom_resource_definition().to_dict()['items']]
