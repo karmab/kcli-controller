@@ -3,9 +3,9 @@ kind: Machine
 metadata:
   name: vm2
 spec:
-  providerConfig:
+  providerSpec:
     value:
-      kind: "KcliMachineProviderConfig"
+      kind: KcliMachineProviderSpec
       profile: CentOS-7-x86_64-GenericCloud.qcow2
       parameters:
         memory: 2048

@@ -34,17 +34,17 @@ def process_machine(crds, obj, operation):
     name = metadata.get("name")
     namespace = metadata.get("namespace")
     spec = obj.get("spec")
-    providerconfig = spec["providerConfig"]["value"]
-    vmkind = providerconfig.get("kind")
-    if vmkind != "KcliMachineProviderConfig":
+    providerspec = spec["providerSpec"]["value"]
+    vmkind = providerspec.get("kind")
+    if vmkind != "KcliMachineProviderSpec":
         return
     config = Kconfig(quiet=True)
     if operation == "DELETED":
         config.k.delete(name)
         print("prout")
         return
-    profile = providerconfig.get("profile")
-    overrides = providerconfig.get("parameters", {})
+    profile = providerspec.get("profile")
+    overrides = providerspec.get("parameters", {})
     print("Creating: %s" % name)
     if profile is not None:
         result = config.create_vm(name, profile, overrides=overrides)
