@@ -1,7 +1,5 @@
 FROM karmab/kcli
 MAINTAINER Karim Boumedhel <karimboumedhel@gmail.com>
-
-ADD controller.py /tmp
-ADD machine.yml /tmp
-
-ENTRYPOINT  ["python3", "-u", "/tmp/controller.py"]
+ADD . /kopf
+RUN pip install kopf 
+ENTRYPOINT ["kopf","run","/kopf/handlers.py", "--verbose"]

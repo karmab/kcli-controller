@@ -2,7 +2,7 @@
 
 [![](https://images.microbadger.com/badges/image/karmab/kcli-controller.svg)](https://microbadger.com/images/karmab/kcli-controller "Get your own image badge on microbadger.com")
 
-This is a controller leveraging [kcli](https://github.com/karmab/kcli) and machine crds to create vms the same way, regardless of the infrastructure
+This is a controller leveraging [kcli](https://github.com/karmab/kcli) and using vm crds to create vms the same way, regardless of the infrastructure.
 
 ## Requisites
 
@@ -11,35 +11,35 @@ This is a controller leveraging [kcli](https://github.com/karmab/kcli) and machi
 
 ## Running
 
-If you re already running kcli locally, create first configmaps to share your credentials and ssh keys
-
-```
-kubectl create configmap kcli-config --from-file=~/.kcli
-kubectl create configmap ssh-config --from-file=~/.ssh
-```
-
-Then deploy the controller
-
-```
-kubectl create -f deploy.yml
-```
-
-on openshift, you will need to run the following commands
+On openshift, first run the following commands
 
 ```
 oc new-project kcli
 oc adm policy add-cluster-role-to-user cluster-admin -z default -n kcli
 ```
 
-Note that the *machine* custom resource definition gets created when launching the controller
+If you're already running kcli locally, create first configmaps to share your credentials and ssh keys
+
+```
+kubectl create configmap kcli-config --from-file=$HOME/.kcli
+kubectl create configmap ssh-config --from-file=$HOME/.ssh
+```
+
+Then deploy the controller
+
+```
+kubectl create -f crd.yml
+kubectl create -f deploy.yml
+```
+
 
 ## How to use
 
-Create some machine and check on your infrastructure
+Create/Delete some vm and check on your infrastructure
 
 ```
 oc create -f samplecrd/vm1.yml
-oc get machines -o yaml
+oc get vms -o yaml
 ```
 
 ## Copyright

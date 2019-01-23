@@ -18,7 +18,7 @@ spec:
       - name: kcli-controller
         image: karmab/kcli-controller:latest
         volumeMounts:
-        - mountPath: /root/.kcli
+        - mountPath: /root/.kcli_cm
           name: kcli-config
         - mountPath: /root/.ssh
           name: ssh-config
