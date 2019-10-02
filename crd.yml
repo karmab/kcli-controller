@@ -10,8 +10,46 @@ spec:
     plural: vms
     singular: vm
     kind: Vm
-apiVersion: apiextensions.k8s.io/v1beta1
+  validation:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              Running:
+                type: string
+              ip:
+                type: string
+              source:
+                type: string
+              plan:
+                type: string
+              profile:
+                type: string
+  additionalPrinterColumns:
+  - name: Running
+    type: string
+    description: Running
+    JSONPath: .spec.start
+  - name: Ip
+    type: string
+    description: Ip
+    JSONPath: .spec.ip
+  - name: Source
+    type: string
+    description: Source
+    JSONPath: .spec.template
+  - name: Plan
+    description: Plan
+    type: string
+    JSONPath: .spec.plan
+  - name: Profile
+    description: Profile
+    type: string
+    JSONPath: .spec.profile
 ---
+apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   name: plans.kcli.karmalabs.local

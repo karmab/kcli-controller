@@ -27,10 +27,9 @@ def process_vm(name, spec, operation='create'):
                 profile = spec['template']
             else:
                 profile = name
-        overrides = spec
         print("Creating: %s" % name)
         if profile is not None:
-            result = config.create_vm(name, profile, overrides=overrides)
+            result = config.create_vm(name, profile, overrides=spec)
             if result['result'] == 'success':
                 print("Success : %s created" % name)
         else:
@@ -63,45 +62,44 @@ def process_plan(plan, spec, operation='create'):
         return
 
 
-def update(name, spec):
+def update(name, diff):
     config = Kconfig(quiet=True)
     k = config.k
-    info = k.info(name)
-    for arg in spec:
+    for entry in diff:
+        if entry[0] not in ['add', 'change']:
+            continue
+        arg = entry[1][1]
+        value = entry[3]
         if arg == 'plan':
-            plan = spec[arg]
-            if info['plan'] != plan:
-                common.pprint("Updating plan of vm %s to %s..." % (name, plan))
-                k.update_metadata(name, 'plan', plan)
+            plan = value
+            common.pprint("Updating plan of vm %s to %s..." % (name, plan))
+            k.update_metadata(name, 'plan', plan)
         if arg == 'memory':
-            memory = spec[arg]
-            if info['memory'] != memory:
-                common.pprint("Updating memory of vm %s to %s..." % (name, memory))
-                k.update_memory(name, memory)
+            memory = value
+            common.pprint("Updating memory of vm %s to %s..." % (name, memory))
+            k.update_memory(name, memory)
         if arg == 'numcpus':
-            numcpus = spec[arg]
-            if info['numcpus'] != numcpus:
-                common.pprint("Updating numcpus of vm %s to %s..." % (name, numcpus))
-                k.update_cpus(name, numcpus)
+            numcpus = value
+            common.pprint("Updating numcpus of vm %s to %s..." % (name, numcpus))
+            k.update_cpus(name, numcpus)
         if arg == 'autostart':
-            autostart = spec[arg]
+            autostart = value
             common.pprint("Setting autostart for vm %s to %s..." % (name, autostart))
             k.update_start(name, start=autostart)
         if arg == 'information':
-            information = spec[arg]
+            information = value
             common.pprint("Setting information for vm %s..." % name)
             k.update_information(name, information)
         if arg == 'iso':
-            iso = spec[arg]
+            iso = value
             common.pprint("Switching iso for vm %s to %s..." % (name, iso))
             k.update_iso(name, iso)
         if arg == 'flavor':
-            flavor = spec[arg]
-            if info['flavor'] != flavor:
-                common.pprint("Updating flavor of vm %s to %s..." % (name, flavor))
-                k.update_flavor(name, flavor)
+            flavor = value
+            common.pprint("Updating flavor of vm %s to %s..." % (name, flavor))
+            k.update_flavor(name, flavor)
         if arg == 'start':
-            start = spec[arg]
+            start = value
             if start:
                 common.pprint("Starting vm %s..." % name)
                 k.start(name)
@@ -138,12 +136,13 @@ def delete_vm(meta, spec, namespace, logger, **kwargs):
         process_vm(name, spec, operation=operation)
 
 
+# def update_vm(meta, spec, namespace, logger, **kwargs):
 @kopf.on.update('kcli.karmalabs.local', 'v1', 'vms')
-def update_vm(meta, spec, namespace, logger, **kwargs):
+def update_vm(meta, spec, old, new, diff, **kwargs):
     operation = 'update'
     name = meta.get('name')
     print("Handling %s on vm %s" % (operation, name))
-    update(name, spec)
+    update(name, diff)
 
 
 @kopf.on.create('kcli.karmalabs.local', 'v1', 'plans')
