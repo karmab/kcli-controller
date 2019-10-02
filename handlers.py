@@ -4,7 +4,6 @@ import kopf
 from kvirt.config import Kconfig
 import os
 import shutil
-import yaml
 
 DOMAIN = "kcli.karmalabs.local"
 
@@ -34,7 +33,10 @@ def process_vm(name, namespace, spec, operation='create'):
 
 
 def process_plan(plan, namespace, spec, operation='create'):
-    inputstring = yaml.dump(spec['plan'])
+    inputstring = spec.get('plan')
+    if inputstring is None:
+        print("Failure : %s not created because of missing plan spec")
+        return
     overrides = spec.get('parameters', {})
     config = Kconfig(quiet=True)
     if operation == "delete":

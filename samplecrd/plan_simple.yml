@@ -3,7 +3,7 @@ kind: Plan
 metadata:
   name: simpleplan
 spec:
-  plan:
+  plan: |
     vm1:
       memory: 512
       numcpus: 2
