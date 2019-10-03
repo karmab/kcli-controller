@@ -2,12 +2,12 @@
 
 [![](https://images.microbadger.com/badges/image/karmab/kcli-controller.svg)](https://microbadger.com/images/karmab/kcli-controller "Get your own image badge on microbadger.com")
 
-This is a controller leveraging [kcli](https://github.com/karmab/kcli) and using vm crds to create vms the same way, regardless of the infrastructure.
+This is a controller leveraging [kcli](https://github.com/karmab/kcli) and using vm an plan crds to create vms the same way, regardless of the infrastructure.
 
 ## Requisites
 
 - a running kubernetes/openshift cluster
-- some infrastructure somewhere and the corresponding credentials (libvirt, gcp, aws, ovirt, openstack, kubevirt)
+- some infrastructure somewhere and the corresponding credentials (libvirt, ovirt, gcp, aws, openstack, vsphere, kubevirt)
 
 ## Running
 
@@ -38,7 +38,14 @@ kubectl create -f deploy.yml
 Create/Delete some vm and check on your infrastructure
 
 ```
-oc create -f samplecrd/vm1.yml
+oc create -f samplecrd/vm_cirros.yml
+oc get vms -o yaml
+```
+
+Create plans
+
+```
+oc create -f samplecrd/plan_simple.yml
 oc get vms -o yaml
 ```
 
