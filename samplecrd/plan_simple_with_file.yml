@@ -1,0 +1,26 @@
+apiVersion: "kcli.karmalabs.local/v1"
+kind: Plan
+metadata:
+  name: simpleplan
+spec:
+  plan: |
+    vm1:
+      memory: 512
+      numcpus: 2
+      nets:
+       - default
+      template: cirros-0.4.0-x86_64-disk.img
+      files:
+        path: /root/frout.txt
+        origin: frout.txt
+    vm2:
+      memory: 1024
+      numcpus: 4
+      nets:
+       - default
+      disks:
+       - 20
+      pool: default
+      template: rhcos-42.80.20190925.2-qemu.qcow2
+      cmds:
+       - echo this stuff works > /tmp/result.txt

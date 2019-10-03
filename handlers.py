@@ -5,7 +5,7 @@ from kubernetes import client
 from kvirt.config import Kconfig
 from kvirt import common
 import os
-import shutil
+from re import sub
 
 DOMAIN = "kcli.karmalabs.local"
 VERSION = "v1"
@@ -54,10 +54,13 @@ def process_vm(name, namespace, spec, operation='create', timeout=60):
 
 
 def process_plan(plan, spec, operation='create'):
+    workdir = spec.get('workdir', '/workdir')
     inputstring = spec.get('plan')
     if inputstring is None:
         print("Failure : %s not created because of missing plan spec")
         return
+    elif os.path.exists("/i_am_a_container"):
+        inputstring = sub(r"origin:( *)", r"origin:\1%s/" % workdir, inputstring)
     overrides = spec.get('parameters', {})
     config = Kconfig(quiet=True)
     if operation == "delete":
@@ -125,13 +128,6 @@ def update(name, namespace, diff):
         info = config.k.info(name)
         newspec = {'spec': {'info': info}}
         update_vm_cr(name, namespace, newspec)
-
-
-homedir = os.path.expanduser("~")
-cmdir = "%s/.kcli_cm" % homedir
-kclidir = "%s/.kcli" % homedir
-if os.path.isdir(cmdir) and not os.path.isdir(kclidir):
-    shutil.copytree(cmdir, kclidir)
 
 
 @kopf.on.create(DOMAIN, VERSION, 'vms')
