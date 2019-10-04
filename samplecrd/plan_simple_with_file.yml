@@ -11,8 +11,8 @@ spec:
        - default
       template: cirros-0.4.0-x86_64-disk.img
       files:
-        path: /root/frout.txt
-        origin: frout.txt
+        - path: /root/frout.txt
+          origin: frout.txt
     vm2:
       memory: 1024
       numcpus: 4

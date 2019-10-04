@@ -48,21 +48,21 @@ def process_vm(name, namespace, spec, operation='create', timeout=60):
 
 
 def process_plan(plan, spec, operation='create'):
-    workdir = spec.get('workdir', '/workdir')
-    inputstring = spec.get('plan')
-    if inputstring is None:
-        print("Plan %s not created because of missing plan spec" % plan)
-        return {'result': 'failure', 'reason': 'missing plan spec'}
-    elif os.path.exists("/i_am_a_container"):
-        inputstring = sub(r"origin:( *)", r"origin:\1%s/" % workdir, inputstring)
-    overrides = spec.get('parameters', {})
     config = Kconfig(quiet=True)
     if operation == "delete":
         print("Deleting plan %s" % plan)
         return config.plan(plan, delete=True)
     else:
-        print("Creating plan %s" % plan)
-        return config.plan(plan, inputstring=inputstring, overrides=overrides)
+        print("Creating/Updating plan %s" % plan)
+        overrides = spec.get('parameters', {})
+        workdir = spec.get('workdir', '/workdir')
+        inputstring = spec.get('plan')
+        if inputstring is None:
+            print("Plan %s not created because of missing plan spec" % plan)
+            return {'result': 'failure', 'reason': 'missing plan spec'}
+        elif os.path.exists("/i_am_a_container"):
+            inputstring = sub(r"origin:( *)", r"origin:\1%s/" % workdir, inputstring)
+            return config.plan(plan, inputstring=inputstring, overrides=overrides)
 
 
 def update(name, namespace, diff):

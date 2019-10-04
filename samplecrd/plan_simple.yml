@@ -1,16 +1,16 @@
 apiVersion: "kcli.karmalabs.local/v1"
 kind: Plan
 metadata:
-  name: simpleplan
+  name: simpleplan2
 spec:
   plan: |
-    vm1:
+    vm11:
       memory: 512
       numcpus: 2
       nets:
        - default
       template: cirros-0.4.0-x86_64-disk.img
-    vm2:
+    vm22:
       memory: 1024
       numcpus: 4
       nets:
