@@ -30,8 +30,8 @@ def process_vm(name, namespace, spec, operation='create', timeout=60):
         if not exists:
             profile = spec.get("profile")
             if profile is None:
-                if 'template' in spec:
-                    profile = spec['template']
+                if 'image' in spec:
+                    profile = spec['image']
                 else:
                     profile = name
             print("Creating vm %s" % name)
@@ -40,8 +40,8 @@ def process_vm(name, namespace, spec, operation='create', timeout=60):
                 if result['result'] != 'success':
                     return result
         info = config.k.info(name)
-        template = info.get('template')
-        if template is not None and 'ip' not in info:
+        image = info.get('image')
+        if image is not None and 'ip' not in info:
             raise kopf.TemporaryError("Waiting to populate ip", delay=10)
         newspec = {'spec': {'info': info}}
         return update_vm_cr(name, namespace, newspec)

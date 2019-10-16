@@ -49,6 +49,13 @@ oc create -f samplecrd/plan_simple.yml
 oc get vms -o yaml
 ```
 
+To run plans which contain scripts or files, you ll need to copy those assets in the /workdir of the kcli pod
+
+```
+KCLIPOD=$(kubectl get pod -o name -n kcli | sed 's@pod/@@')
+kubectl cp samplecrd/frout.txt $KCLIPOD:/workdir
+```
+
 ## Copyright
 
 Copyright 2017 Karim Boumedhel
