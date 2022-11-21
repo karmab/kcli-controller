@@ -1,3 +1,6 @@
+# *THIS REPO is now considered obsolete, as all the described functionality was directly merged in kcli. Refer to [https://kcli.readthedocs.io/en/latest/#using-controller](https://kcli.readthedocs.io/en/latest/#using-controller)*
+
+
 # kcli-controller repository
 
 [![](https://images.microbadger.com/badges/image/karmab/kcli-controller.svg)](https://microbadger.com/images/karmab/kcli-controller "Get your own image badge on microbadger.com")
