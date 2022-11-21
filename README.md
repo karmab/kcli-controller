@@ -1,5 +1,4 @@
-# *THIS REPO is now considered obsolete, as all the described functionality was directly merged in kcli. Refer to
-[https://kcli.readthedocs.io/en/latest/#using-controller](https://kcli.readthedocs.io/en/latest/#using-controller)*
+# *THIS REPO is now considered obsolete, as all the described functionality was directly merged in kcli. Refer to [https://kcli.readthedocs.io/en/latest/#using-controller](https://kcli.readthedocs.io/en/latest/#using-controller)*
 
 
 # kcli-controller repository
